@@ -3,6 +3,7 @@ export class UserEntity {
   name: string;
   email: string;
   password: string;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;

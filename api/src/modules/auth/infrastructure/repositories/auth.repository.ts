@@ -24,7 +24,20 @@ export class AuthRepository implements IAuthRepository {
         createdAt: new Date(),
       },
     });
-
     return createdUser;
+  }
+
+  findUserByEmail(email: string): Promise<UserEntity | null> {
+    const user = this.prisma.user.findUnique({
+      where: { email: email },
+    });
+    return user;
+  }
+
+  async activeUser(email: string): Promise<void> {
+    await this.prisma.user.update({
+      where: { email: email },
+      data: { isActive: true },
+    });
   }
 }

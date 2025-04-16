@@ -6,9 +6,22 @@ import { AuthRepository } from './infrastructure/repositories/auth.repository';
 import { AuthService } from './application/services/auth.service';
 import { EmailModule } from '@modules/email/email.module';
 import { BcryptAdapter } from '@common/adapters/bcrypt.adapter';
+import { AuthHelper } from './application/helpers/auth.helper';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [PrismaModule, EmailModule],
+  imports: [
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.registerAsync({
+      useFactory: () => ({
+        secret: process.env.JWT_SECRET,
+        signOptions: { expiresIn: '1h' },
+      }),
+    }),
+    PrismaModule,
+    EmailModule,
+  ],
   controllers: [AuthController],
   providers: [
     {
@@ -17,6 +30,7 @@ import { BcryptAdapter } from '@common/adapters/bcrypt.adapter';
     },
     AuthService,
     BcryptAdapter,
+    AuthHelper,
   ],
 })
 export class AuthModule {}
