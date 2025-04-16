@@ -35,4 +35,12 @@ export class AuthHelper {
       maxAge: 60 * 60 * 1000,
     });
   }
+
+  async clearCookies(res: Response) {
+    res.clearCookie('access_token', {
+      httpOnly: true,
+      secure: process.env.NODE_MODE === 'development' ? false : true,
+      sameSite: 'strict',
+    });
+  }
 }

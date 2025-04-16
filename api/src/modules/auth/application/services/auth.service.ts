@@ -49,6 +49,10 @@ export class AuthService {
     return access_token;
   }
 
+  async logout(res: Response): Promise<void> {
+    await this.authHelper.clearCookies(res);
+  }
+
   async validateUser(email: string, password: string): Promise<UserEntity> {
     const existRegisteredUser = await this.authRepository.verifyExistRegisteredUser(email);
     if (!existRegisteredUser) {

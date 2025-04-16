@@ -23,6 +23,13 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async login(@Body() request: LoginRequestDto, @Res({ passthrough: true }) res: Response) {
     await this.authService.login(request, res);
-    return createApiResponse('Logado com sucesso', {});
+    return createApiResponse('Logged in successfully', {});
+  }
+
+  @Post('/logout')
+  @HttpCode(HttpStatus.OK)
+  async logout(@Res({ passthrough: true }) res: Response) {
+    await this.authService.logout(res);
+    return createApiResponse('Logged out successfully', {});
   }
 }
