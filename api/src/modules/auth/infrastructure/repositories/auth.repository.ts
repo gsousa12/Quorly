@@ -7,13 +7,6 @@ import { Injectable } from '@nestjs/common';
 export class AuthRepository implements IAuthRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async verifyExistRegisteredUser(email: string): Promise<boolean> {
-    const user = await this.prisma.user.findUnique({
-      where: { email: email },
-    });
-    return !!user;
-  }
-
   async create(user: UserEntity): Promise<UserEntity> {
     const createdUser = await this.prisma.user.create({
       data: {
@@ -25,6 +18,13 @@ export class AuthRepository implements IAuthRepository {
       },
     });
     return createdUser;
+  }
+
+  async verifyExistRegisteredUser(email: string): Promise<boolean> {
+    const user = await this.prisma.user.findUnique({
+      where: { email: email },
+    });
+    return !!user;
   }
 
   findUserByEmail(email: string): Promise<UserEntity | null> {

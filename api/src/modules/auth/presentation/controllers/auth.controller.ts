@@ -32,4 +32,8 @@ export class AuthController {
     await this.authService.logout(res);
     return createApiResponse('Logged out successfully', {});
   }
+
+  @Post('/reset-password')
+  @HttpCode(HttpStatus.OK)
+  async resetPassword() {}
 }

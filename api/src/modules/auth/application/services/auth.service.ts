@@ -23,7 +23,8 @@ export class AuthService {
     if (existRegisteredUser) {
       throw new BadRequestException('There is already a registered user with that email');
     }
-    user.password = this.authHelper.generateUserTemporaryPassword();
+    //user.password = await this.authHelper.generateUserTemporaryPassword();
+    user.password = '123456';
     console.log('Senha temporária: ' + user.password);
     const plainPassword = user.password;
     user.password = await this.authHelper.hashPassword(user.password);

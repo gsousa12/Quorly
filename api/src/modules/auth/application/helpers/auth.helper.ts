@@ -6,7 +6,7 @@ import { Response } from 'express';
 export class AuthHelper {
   constructor(private readonly bcryptAdapter: BcryptAdapter) {}
 
-  generateUserTemporaryPassword(): string {
+  async generateUserTemporaryPassword(): Promise<string> {
     const temporaryPasswordLength = 10;
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let password = '';
@@ -30,7 +30,7 @@ export class AuthHelper {
   async implementsCookies(access_token: string, res: Response) {
     res.cookie('access_token', access_token, {
       httpOnly: true,
-      secure: process.env.NODE_MODE === 'development' ? false : true,
+      secure: process.env.NODE_MODE === 'development' ? false : true || true,
       sameSite: 'strict',
       maxAge: 60 * 60 * 1000,
     });
@@ -39,7 +39,7 @@ export class AuthHelper {
   async clearCookies(res: Response) {
     res.clearCookie('access_token', {
       httpOnly: true,
-      secure: process.env.NODE_MODE === 'development' ? false : true,
+      secure: process.env.NODE_MODE === 'development' ? false : true || true,
       sameSite: 'strict',
     });
   }
