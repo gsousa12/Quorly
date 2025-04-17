@@ -11,5 +11,13 @@ export function createApiResponse<T extends Record<string, any>>(
   data: T,
   pagination?: PaginationMeta,
 ): ApiResponse<T> {
-  return { message, data, ...(pagination && { pagination }) };
+  const response: any = { message };
+
+  if (pagination) {
+    response.pagination = pagination;
+  }
+
+  response.data = data;
+
+  return response;
 }

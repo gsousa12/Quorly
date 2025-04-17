@@ -8,13 +8,58 @@ datasource db {
 }
 
 model User {
-  id             Int       @id @default(autoincrement())
-  name           String   
-  email          String    @unique
-  password       String
-  isActive       Boolean  
-  
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime? @map("updated_at")
-  deletedAt      DateTime? @map("deleted_at")
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  isActive  Boolean  @map("is_active")
+  polls     Poll[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
 }
+
+model Poll {
+  id             String       @id @default(uuid())
+  title          String       @db.VarChar(100)
+  description    String?
+  deadline       DateTime
+  status         String
+  accessCount    Int          @default(0) @map("access_count")
+  minimumQuorum  Int          @default(0) @map("minimum_quorum")
+  votesPerEmail  Int          @default(1) @map("votes_per_email")
+  slug           String       @unique @default(uuid())
+
+  userId         Int          @map("user_id")
+  user           User         @relation(fields: [userId], references: [id])
+
+  options        PollOption[]
+  voters         Voter[]
+
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+}
+
+model PollOption {
+  id       Int     @id @default(autoincrement())
+  text     String  @db.VarChar(100)
+  pollId   String  @map("poll_id")
+  poll     Poll    @relation(fields: [pollId], references: [id])
+  voters   Voter[]
+}
+
+model Voter {
+  id         String      @id @default(uuid())
+  name       String      @db.VarChar(50)
+  email      String
+  votedAt    DateTime    @default(now()) @map("voted_at")
+
+  pollId     String      @map("poll_id")
+  poll       Poll        @relation(fields: [pollId], references: [id])
+
+  optionId   Int         @map("option_id")
+  option     PollOption  @relation(fields: [optionId], references: [id])
+
+  @@index([pollId, email])
+}
+

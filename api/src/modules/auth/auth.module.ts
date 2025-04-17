@@ -9,6 +9,7 @@ import { BcryptAdapter } from '@common/adapters/bcrypt.adapter';
 import { AuthHelper } from './application/helpers/auth.helper';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './application/strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -31,6 +32,8 @@ import { JwtModule } from '@nestjs/jwt';
     AuthService,
     BcryptAdapter,
     AuthHelper,
+    JwtStrategy,
   ],
+  exports: [JwtModule, PassportModule, JwtStrategy],
 })
 export class AuthModule {}
