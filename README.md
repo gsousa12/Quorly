@@ -25,7 +25,7 @@ O objetivo é facilitar decisões coletivas em grupos, como escolha de líderes,
 
 O projeto está na fase de desenvolvimento do **MVP**, com as seguintes funcionalidades já planejadas ou implementadas:
 
-- [ ]  Autenticação de usuários (cadastro e login).
+- [x]  Autenticação de usuários (cadastro e login).
 - [ ]  Criação e gerenciamento de votações.
 - [ ]  Página de votação dinâmica.
 - [ ]  Notificações em tempo real via Socket.IO.
